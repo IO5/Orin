@@ -11,5 +11,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="perlin.hpp" />
+    <ClInclude Include="vec.hpp" />
   </ItemGroup>
 </Project>

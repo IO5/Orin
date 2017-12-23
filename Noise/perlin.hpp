@@ -1,38 +1,8 @@
 #pragma once
 
-#include <glm\glm.hpp>
+#include "vec.hpp"
 
 namespace orin {
-
-template <typename Int, typename Real>
-Int fast_floor(Real val) {
-    return (val >= 0 ? (Int)val : (Int)val - 1);
-}
-
-template <typename Int, size_t D, typename Real>
-glm::vec<D, Int> fast_floor(const glm::vec<D, Real>& vec) {
-    glm::vec<D, Int> result;
-    for (auto i = 0; i < D; ++i) {
-        result[i] = fast_floor(vec[i]);
-    }
-    return result;
-}
-
-template <typename T, class Func>
-inline auto glm_for_each(T val, Func&& func) {
-    return func(val);
-}
-
-template <size_t D, typename T, class Func>
-auto glm_for_each(const glm::vec<D, T>&& vec, Func&& func) {
-    using result_type = std::decay_t<decltype(func(std::declval<T>()))>;
-    glm::vec<D, result_type> result;
-    for (auto i = 0; i < D; ++i) {
-        result[i] = func(vec[i]);
-    }
-    return result;
-}
-
 
 namespace interpolation {
     struct linear {
@@ -48,16 +18,17 @@ namespace interpolation {
         T operator()(const T& v) { return ((6 * v - 15) * v + 10) * v * v * v; }
     };
     struct wide {
-        //TODO re
         template <typename T>
         T operator()(const T& v) {
-            v = 1 - v * v / 4;
-            auto v_sqr = v * v;
-            if (v > 0) {
-                return (4 * v - 3) * v_sqr * v_sqr;
-            } else {
-                return 0;
-            }
+            return detail::glm_for_each(v, [](const T& v) {
+                v = 1 - v * v / 4;
+                auto v_sqr = v * v;
+                if (v > 0) {
+                    return (4 * v - 3) * v_sqr * v_sqr;
+                } else {
+                    return 0;
+                }
+            });
         }
     };
 } // interpolation
@@ -68,19 +39,19 @@ namespace detail {
 template <size_t D, typename T, typename interpolation_method>
 class perlin_base_impl {
 public:
-    using vec = glm::vec<D, T>;
-    using ivec = glm::vec<D, int>;
+    using vec = orin::vec<D, T>;
+    using ivec = orin::vec<D, int>;
 
     static T get(const vec& p) {
         // grid points
         auto pi0 = fast_floor<int>(p);
         auto pi1 = pi0 + 1;
 
-        auto pf = glm::fract(p);
+        auto pf = fract(p);
 
-        auto influences = get_influence_vecs(pi0, pi1, p);
+        auto influence_vecs = get_influence_vecs(pi0, pi1, p);
 
-        return average(influences, interpolate(pf));
+        return average(influence_vecs, interpolate(pf));
     }
 
 private:

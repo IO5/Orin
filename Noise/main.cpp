@@ -1,4 +1,5 @@
-﻿#include <glm\glm.hpp>
+﻿#define GLM_ENABLE_EXPERIMENTAL
+#include <glm\glm.hpp>
 //#include <glm\gtx\compatibility.hpp>
 
 #include <iostream>
@@ -173,6 +174,12 @@ T perlin(const Vec<D, T>& p)
 }
 */
 
+#include <glm/gtx/string_cast.hpp>
+
 int main() {
+    auto a = orin::fast_floor<int>(glm::vec3(-12.5));
+
+    std::cout << glm::to_string(a) << '\n';
+
     return 0;
 }
