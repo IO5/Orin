@@ -5,30 +5,34 @@
 
 namespace orin {
 
-using glm::vec;
+using namespace glm;
+
+template <size_t D, typename T>
+using vec = glm::vec<D, T>;
 
 namespace detail {
 
-template <typename T, class Func>
-inline auto glm_for_each(T val, Func&& func) {
-    return func(val);
-}
+template<typename Vec>
+struct vec_dim_impl;
 
-template <size_t D, typename T, class Func>
-inline auto glm_for_each(const vec<D, T>& vec, Func&& func) {
-    using result_type = std::decay_t<decltype(func(std::declval<T>()))>;
-    glm::vec<D, result_type> result;
-    for (auto i = 0; i < D; ++i) {
-        result[i] = func(vec[i]);
-    }
-    return result;
-}
+template<size_t L, typename T>
+struct vec_dim_impl<orin::vec<L, T>> {
+    static constexpr size_t value = L;
+};
 
 } // detail
 
-template <typename Int, typename T>
+template<typename Vec>
+constexpr size_t vec_dim = detail::vec_dim_impl<Vec>::value;
+
+// not mathematically correct, but close enough
+template <typename T, typename Int = int>
 inline auto fast_floor(const T& vec) {
-    return detail::glm_for_each(vec, [](auto val) { return (val >= 0 ? (Int)val : (Int)val - 1); });
+    glm::vec<vec_dim<T>, Int> result;
+    for (auto i = 0; i < vec_dim<T>; ++i) {
+        result[i] = vec[i] >= 0 ? (Int)vec[i] : (Int)vec[i] - 1;
+    }
+    return result;
 }
 
 } // orin
