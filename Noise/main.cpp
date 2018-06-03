@@ -1,6 +1,5 @@
 ﻿#define GLM_ENABLE_EXPERIMENTAL
 #include <glm\glm.hpp>
-//#include <glm\gtx\compatibility.hpp>
 
 #include <iostream>
 #include <string>
@@ -18,7 +17,8 @@ T get(const orin::vec<D, T>& p) {
 
 int main() {
     orin::perlin_base<3, float, orin::interpolation::linear, orin::detail::classic_gradient<float>> perlin;
-    glm::vec3 a(0.5);
+    glm::vec3 a;
+    glm::lerp<float>(1.0f, 2.0f, 0.5f);
     std::cout << glm::to_string(a) << '\n';
 
     std::cout << get(a) << '\n';

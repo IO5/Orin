@@ -121,8 +121,7 @@ public:
             influences[n] = influence(p, vert);
         }
 
-        // TODO fix dis shit
-        return 0;//average(influences, interpolate(fract(p)));
+        return average(influences, interpolate(fract(p)));
     }
 
     template <typename... Args>
@@ -160,7 +159,7 @@ private:
         std::array<T, N / 2> next_interm;
 
         for (auto i = 0; i < (N / 2); ++i) {
-            next_interm[i] = lerp(interm[2 * i], interm[2 * i + 1], weights[dim]);
+            //next_interm[i] = lerp(interm[2 * i], interm[2 * i + 1], weights[dim]);
         }
 
         if constexpr (N == 2) {
