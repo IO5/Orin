@@ -146,8 +146,7 @@ private:
     constexpr T influence(const vec& p, const ivec& grid_p) {
         vec dist = p - vec(grid_p);
         vec grad = gradient(grid_p);
-        //return dot(dist, grad);
-        return 0;
+        return dot(dist, grad);
     }
 
     // average pairs of influences using lerp, down to a single value
@@ -159,7 +158,7 @@ private:
         std::array<T, N / 2> next_interm;
 
         for (auto i = 0; i < (N / 2); ++i) {
-            //next_interm[i] = lerp(interm[2 * i], interm[2 * i + 1], weights[dim]);
+            next_interm[i] = lerp(interm[2 * i], interm[2 * i + 1], weights[dim]);
         }
 
         if constexpr (N == 2) {
