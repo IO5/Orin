@@ -33,7 +33,7 @@ namespace interpolation {
     struct wide {
         template <typename T>
         T interpolate(const T& v) {
-            // I don't think it's needed
+            // I don't think max is needed actually
             //v = max(1 - v * v / 4, 0);
             v = 1 - v * v / 4;
             auto v_quad = v * v;
@@ -41,7 +41,8 @@ namespace interpolation {
         }
         template <typename T>
         T derivative(const T& v) {
-            return ((4 - v * v) - 3) * 0.25 * (4 - v * v) ^ 4;
+            auto v_sqr = (4 - v * v);
+            return (12 - 5 * v_sqr) * v_sqr * v_sqr * v_sqr * v / 128;
         }
     };
 } // interpolation
