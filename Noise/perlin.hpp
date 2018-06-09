@@ -2,6 +2,7 @@
 
 #include "vec.hpp"
 
+#include <limits>
 #include <array>
 #include <algorithm>
 #include <random>
@@ -13,7 +14,7 @@ namespace interpolation {
         template <typename T>
         T interpolate(const T& v) { return v; }
         template <typename T>
-        T derivative(const T& v) { return 1; }
+        T derivative(const T& v) { return T(1); }
     };
     struct cubic {
         template <typename T>
@@ -139,9 +140,11 @@ private:
 template <size_t D, typename T, typename interpolant, typename gradient_source>
 class perlin_base : public interpolant, public gradient_source {
 public:
+    static_assert(D > 0);
+    static_assert(std::numeric_limits<T>::is_iec559);
+
     using vec = orin::vec<D, T>;
     using ivec = orin::vec<D, int>;
-    using bvec = orin::vec<D, bool>;
 
     using gradient_source::gradient_source;
 

@@ -9,6 +9,7 @@
 
 #include <glm/gtx/string_cast.hpp>
 #include "perlin.hpp"
+#include "simplex.hpp"
 
 template <size_t D, typename T>
 T get(const orin::vec<D, T>& p) {
@@ -22,6 +23,7 @@ int main() {
 
     std::cout << get(a) << '\n';
     std::cout << perlin.value(a) << '\n';
+    std::cout << glm::to_string(perlin.derivative(a)) << '\n';
 
     return 0;
 }

@@ -12,5 +12,6 @@
   <ItemGroup>
     <ClInclude Include="perlin.hpp" />
     <ClInclude Include="vec.hpp" />
+    <ClInclude Include="simplex.hpp" />
   </ItemGroup>
 </Project>
