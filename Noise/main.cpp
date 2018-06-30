@@ -25,5 +25,7 @@ int main() {
     std::cout << perlin.value(a) << '\n';
     std::cout << glm::to_string(perlin.derivative(a)) << '\n';
 
+    Trie<bool> trie;
+
     return 0;
 }

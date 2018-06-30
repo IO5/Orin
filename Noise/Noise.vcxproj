@@ -120,6 +120,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="scratchpad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="perlin.hpp" />
